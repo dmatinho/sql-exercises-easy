@@ -222,3 +222,40 @@ count(distinct lead_id) as unique_leads,
 count(distinct partner_id) as unique_partners
 from DailySales 
 group by date_id, make_name
+
+_______________________________________________________________________________
+PRACTICE: COALESCE & JOIN & GROUP BY
+1407. Top Travellers
+
+Question: https://leetcode.com/problems/top-travellers/description/?envType=list&envId=e97a9e5m
+
+Solution:
+
+select distinct name, coalesce(sum(distance),0) as travelled_distance 
+from Users u left join Rides r on u.id=r.user_id
+group by user_id
+order by sum(distance) desc, name asc
+
+_______________________________________________________________________________
+PRACTICE: STARTWITH & WHERE STATEMENT
+1527. Patients With a Condition
+
+Question: https://leetcode.com/problems/patients-with-a-condition/description/?envType=list&envId=e97a9e5m
+
+Solution:
+
+select patient_id, patient_name, conditions from Patients
+where conditions like 'DIAB1%' or  conditions like '% DIAB1%'
+
+_______________________________________________________________________________
+PRACTICE: ORDER BY & DISTINCT & WHERE STATEMENT 
+1148. Article Views I
+
+Question: https://leetcode.com/problems/article-views-i/description/?envType=list&envId=e97a9e5m
+
+Solution: 
+select distinct author_id as id from Views 
+where author_id = viewer_id and view_date is not null
+order by id asc
+
+
