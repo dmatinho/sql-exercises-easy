@@ -1,0 +1,224 @@
+
+EASY
+03/13/2024
+_________________________________________________________________________________
+595. Big Countries
+
+Question: https://leetcode.com/problems/big-countries/description/
+
+Solution:
+
+select name, population, area
+from World where population >= 25000000 or area >= 3000000;
+
+_________________________________________________________________________________
+627. Swap Salary
+
+Question: https://leetcode.com/problems/swap-salary/description/
+
+Solution:
+
+select name, population, area
+from World where population >= 25000000 or area >= 3000000;
+
+_________________________________________________________________________________
+620. Not Boring Movies
+
+Question: https://leetcode.com/problems/not-boring-movies/
+
+Solution:
+
+select id, movie, description, rating from Cinema 
+where description != 'boring' and ID % 2 != 0 
+order by rating desc 
+
+_________________________________________________________________________________
+175. Combine Two Tables
+
+Question: https://leetcode.com/problems/combine-two-tables/
+
+Solution:
+
+select firstName, lastName, city, state
+from Person p
+left join Address a on p.personId= a.personId 
+
+_________________________________________________________________________________
+183. Customers Who Never Order
+
+Question: https://leetcode.com/problems/customers-who-never-order/description/
+
+Solution:
+
+select name as Customers from Customers c 
+left join Orders o on c.id = o.customerId
+where o.customerId is null
+
+
+_________________________________________________________________________________
+596. Classes More Than 5 Students
+
+Question: https://leetcode.com/problems/classes-more-than-5-students/
+
+Solution:
+
+select class from Courses 
+group by class 
+having count(student) >=5
+
+_________________________________________________________________________________
+182. Duplicate Emails
+
+Question: https://leetcode.com/problems/duplicate-emails/?envType=list&envId=e97a9e5m
+
+Solution:
+
+select email from Person group by email having count(*) >1
+
+_________________________________________________________________________________
+184. Department Highest Salary
+
+Question: https://leetcode.com/problems/department-highest-salary/description/?envType=list&envId=e97a9e5m
+
+select d.name as Department, e.name as Employee, Salary
+from Employee e
+join Department d on e.departmentId= d.id
+where (departmentId, salary) in (select departmentId, max(salary) from Employee group by departmentId )
+
+_________________________________________________________________________________
+197. Rising Temperature
+
+Question: https://leetcode.com/problems/rising-temperature/description/
+
+select t.id as Id from Weather t 
+join Weather y on t.temperature > y.temperature
+where datediff(y.recordDate,t.recordDate)=-1
+
+_________________________________________________________________________________
+
+https://data36.com/sql-interview-questions-tech-screening-data-analysts/
+Question: Create an SQL query that shows the TOP 3 authors who sold the most books in total!
+
+select author_name from authors a join books b on a.book_name = b.book_name
+group by author_name
+having max(sold_copies)
+limit 3
+
+select author_name, sum(sold_copies) from authors a join books b on a.book_name = b.book_name
+group by author_name
+order by sum(sold_copies) desc
+limit 3
+
+
+_________________________________________________________________________________
+
+
+Question: Write an SQL query to find out how many users inserted more than 1000 but less than 2000 images in their presentations!
+
+select user_id, count(user_id), count(event_date_time) from event_log  
+group by user_id
+having 1000>count(event_date_time)<2000 
+
+select count( distinct user_id) as number_users from event_log  
+group by user_id
+having 1000>count(event_date_time)<2000 
+
+select count(*) from 
+(select user_id, count(event_date_time) as image_count
+from event_log 
+group by user_id) as image_user
+where image_count <2000 and image>1000
+
+_________________________________________________________________________________
+
+
+Question: Print every department where the average salary per employee is lower than $500!
+
+select department_name, avg(salary) from employees e join salaries s on e.employee_id = s.employee_id
+group by department_name
+Having avg(salary) <500
+
+
+
+
+_________________________________________________________________________________
+03/14/2024
+
+1965. Employees With Missing Information
+
+Question: https://leetcode.com/problems/employees-with-missing-information/?envType=list&envId=e55d9ob1
+
+Solution:
+
+select s.employee_id from Salaries s left join Employees e on e.employee_id = s.employee_id
+where salary is null or name is null 
+union 
+select e.employee_id from Employees e left join Salaries s on e.employee_id = s.employee_id
+where salary is null or name is null
+order by employee_id asc
+
+select employee_id from Employees where employee_id not in (select employee_id from Salaries) 
+union
+select employee_id from Salaries where employee_id not in (select employee_id from Employees) 
+order by employee_id asc
+
+_______________________________________________________________________________
+1890. The Latest Login in 2020
+
+Question: https://leetcode.com/problems/the-latest-login-in-2020/description/?envType=list&envId=e97a9e5m
+
+Solution:
+
+select user_id, max(time_stamp) as last_stamp from Logins
+where user_id is not null and year(time_stamp) = 2020
+group by user_id
+order by time_stamp desc 
+
+_______________________________________________________________________________
+PRACTICE: CASE WHEN
+
+1873. Calculate Special Bonus 
+Question: https://leetcode.com/problems/calculate-special-bonus/description/?envType=list&envId=e97a9e5m
+
+Solution:
+select employee_id,
+case when employee_id % 2 <>0 and name not like 'M%' then salary else 0 end as bonus
+from Employees 
+order by employee_id
+
+_______________________________________________________________________________
+PRACTICE: SUBQUERY & AGGREGATION
+619. Biggest Single Number
+
+Question: https://leetcode.com/problems/biggest-single-number/description/
+
+Solution:
+select max(num) as num from MyNumbers
+where num in (select max(num) from MyNumbers group by num having count(*)=1)
+
+_______________________________________________________________________________
+PRACTICE: AGGREGATION & ORDER
+1729. Find Followers Count
+
+Question: https://leetcode.com/problems/find-followers-count/description/?envType=list&envId=e55d9ob1
+
+Solution:
+select user_id, count(follower_id) as followers_count
+from Followers
+group by user_id
+order by user_id asc
+
+_______________________________________________________________________________
+PRACTICE: GROUP BY & COUNT/ AGGREGATION
+1693. Daily Leads and Partners
+
+Question: https://leetcode.com/problems/daily-leads-and-partners/description/?envType=list&envId=e55d9ob1
+
+Solution:
+
+select date_id, 
+make_name, 
+count(distinct lead_id) as unique_leads, 
+count(distinct partner_id) as unique_partners
+from DailySales 
+group by date_id, make_name
