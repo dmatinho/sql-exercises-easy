@@ -11,6 +11,7 @@ Solution:
 select name, population, area
 from World where population >= 25000000 or area >= 3000000;
 
+Time to solve: 1:25m
 _________________________________________________________________________________
 627. Swap Salary
 
@@ -32,6 +33,7 @@ select id, movie, description, rating from Cinema
 where description != 'boring' and ID % 2 != 0 
 order by rating desc 
 
+Time to solve: 3:11
 _________________________________________________________________________________
 175. Combine Two Tables
 
@@ -43,6 +45,7 @@ select firstName, lastName, city, state
 from Person p
 left join Address a on p.personId= a.personId 
 
+Time to solve: 2:16
 _________________________________________________________________________________
 183. Customers Who Never Order
 
@@ -66,6 +69,7 @@ select class from Courses
 group by class 
 having count(student) >=5
 
+Time to solve: 00:42
 _________________________________________________________________________________
 182. Duplicate Emails
 
@@ -85,6 +89,7 @@ from Employee e
 join Department d on e.departmentId= d.id
 where (departmentId, salary) in (select departmentId, max(salary) from Employee group by departmentId )
 
+Time to solve: 24:40
 _________________________________________________________________________________
 197. Rising Temperature
 
@@ -258,4 +263,209 @@ select distinct author_id as id from Views
 where author_id = viewer_id and view_date is not null
 order by id asc
 
+_______________________________________________________________________________
+03/15/2024
 
+PRACTICE: UPPER AND LOWERCASE AND CONCAT
+1667. Fix Names in a Table
+
+Question: https://leetcode.com/problems/fix-names-in-a-table/description/?envType=list&envId=e55d9ob1
+
+Solution:
+select user_id, concat(upper(left(name,1)),
+lower(right(name, length(name)-1))) as name from Users 
+order by user_id asc
+
+_______________________________________________________________________________
+PRACTICE: SELF JOIN
+181. Employees Earning More Than Their Managers
+
+Question: https://leetcode.com/problems/employees-earning-more-than-their-managers/description/
+
+Solution:
+
+select e.name as Employee from Employee e
+join Employee m on e.managerId=m.Id
+where e.salary>m.salary 
+
+_______________________________________________________________________________
+03/16/2024
+
+
+_______________________________________________________________________________
+03/17/2024
+PRACTICE: SELECT DISTINCT & WHERE
+
+1148. Article Views I
+
+Question: https://leetcode.com/problems/article-views-i/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select distinct author_id as id from Views 
+where author_id = viewer_id and view_date is not null
+order by id asc
+_______________________________________________________________________________
+03/18/2024
+PRACTICE: SUBQUERY & NOT IN & LEFT JOIN
+
+607. Sales Person
+
+Question: https://leetcode.com/problems/sales-person/description/?envType=list&envId=e97a9e5m
+
+Solution:
+select s.name from SalesPerson s 
+where s.sales_id not in (select sales_id from Orders o left join Company c 
+on o.com_id = c.com_id where c.name ='RED') 
+
+_______________________________________________________________________________
+PRACTICE: GROUP_CONCAT & GROUP BY * ORDER BY INSIDE GROUP_CONCAT
+
+1484. Group Sold Products By The Date
+
+Question:https://leetcode.com/problems/group-sold-products-by-the-date/description/?envType=list&envId=e97a9e5m
+
+Solution:
+select sell_date, count(distinct product) as num_sold, group_concat(distinct product order by product asc) as products
+from Activities
+group by sell_date
+order by sell_date
+
+_______________________________________________________________________________
+PRACTICE WHERE STATEMENT
+
+1757. Recyclable and Low Fat Products
+Question: https://leetcode.com/problems/recyclable-and-low-fat-products/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select product_id from Products where low_fats ='Y' and recyclable = 'Y'
+
+_______________________________________________________________________________
+SELECT and WHERE
+
+584. Find Customer Referee
+
+Question: https://leetcode.com/problems/find-customer-referee/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+
+select name from Customer where referee_id !=2 or referee_id is null
+
+_______________________________________________________________________________
+PRACTICE: LENGTH & WHERE
+
+1683. Invalid Tweets
+
+Question: https://leetcode.com/problems/invalid-tweets/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select tweet_id from Tweets
+where length(content) >15
+
+_______________________________________________________________________________
+03/19/2024
+
+PRACTICE: AVE & IF & ROUND
+
+1211. Queries Quality and Percentage
+
+Question: https://leetcode.com/problems/queries-quality-and-percentage/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select distinct query_name, 
+round(avg(rating/position),2) as quality, 
+round(avg(if(rating<3,1,0))*100,2) as poor_query_percentage 
+from Queries
+where query_name is not null
+group by query_name
+
+_______________________________________________________________________________
+03/20/2024
+
+PRACTICE: NULL IF & JOIN
+
+1378. Replace Employee ID With The Unique Identifier
+
+Question: https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select unique_id, name
+from Employees e left join EmployeeUNI ee
+on e.id=ee.id
+
+_______________________________________________________________________________
+PRACTICE: JOIN & GROUP BY
+
+1068. Product Sales Analysis I
+
+Question: https://leetcode.com/problems/product-sales-analysis-i/description/?envType=study-plan-v2&envId=top-sql-50
+Solution:
+select product_name,
+year,
+price
+from Sales s join Product p on s.product_id = p.product_id
+group by sale_id
+_______________________________________________________________________________
+PRACTICE: JOIN & CASE
+
+1661. Average Time of Process per Machine
+
+Question: https://leetcode.com/problems/average-time-of-process-per-machine/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select s.machine_id, round(avg(case when e.activity_type= 'end' and s.activity_type='start' then e.timestamp-s.timestamp end),3)  as processing_time
+from Activity s
+join Activity e on s.machine_id =e.machine_id
+group by s.machine_id
+
+_______________________________________________________________________________
+PRACTICE: JOIN & CASE
+
+1661. Average Time of Process per Machine
+
+Question: https://leetcode.com/problems/average-time-of-process-per-machine/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select s.machine_id, round(avg(case when e.activity_type= 'end' and s.activity_type='start' then e.timestamp-s.timestamp end),3)  as processing_time
+from Activity s
+join Activity e on s.machine_id =e.machine_id
+group by s.machine_id
+
+_______________________________________________________________________________
+PRACTICE: JOIN & NULL & WHERE
+
+577. Employee Bonus
+
+Question: https://leetcode.com/problems/employee-bonus/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select name, bonus from Employee e 
+left join Bonus b
+on e.empId = b.empId 
+where bonus <1000 or bonus is null
+_______________________________________________________________________________
+03/21/2024
+
+PRACTICE: JOIN & # TABLES & AND AND ON
+
+1280. Students and Examinations
+
+Question: https://leetcode.com/problems/students-and-examinations/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select s.student_id, student_name, ss.subject_name, 
+count(e.subject_name) as attended_exams 
+from Students s
+join Subjects ss 
+left join Examinations e
+on s.student_id = e.student_id and 
+e.subject_name = ss.subject_name 
+group by s.student_id, s.student_name, ss.subject_name
+order by s.student_id, ss.subject_name
+_______________________________________________________________________________
+PRACTICE: JOIN & # TABLES & AND AND ON
+
+1633. Percentage of Users Attended a Contest
+
+Question: https://leetcode.com/problems/students-and-examinations/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
