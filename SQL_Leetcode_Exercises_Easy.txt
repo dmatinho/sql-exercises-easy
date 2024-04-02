@@ -19,8 +19,9 @@ Question: https://leetcode.com/problems/swap-salary/description/
 
 Solution:
 
-select name, population, area
-from World where population >= 25000000 or area >= 3000000;
+Update Salary set sex = case when sex ='f' then 'm' else 'f' end;
+
+Couldn't solve
 
 _________________________________________________________________________________
 620. Not Boring Movies
@@ -58,6 +59,7 @@ left join Orders o on c.id = o.customerId
 where o.customerId is null
 
 
+Time to solve: 4:00
 _________________________________________________________________________________
 596. Classes More Than 5 Students
 
@@ -79,6 +81,7 @@ Solution:
 
 select email from Person group by email having count(*) >1
 
+Time to solve: 03:00
 _________________________________________________________________________________
 184. Department Highest Salary
 
@@ -88,6 +91,16 @@ select d.name as Department, e.name as Employee, Salary
 from Employee e
 join Department d on e.departmentId= d.id
 where (departmentId, salary) in (select departmentId, max(salary) from Employee group by departmentId )
+
+
+select d.name as Department,
+e.name as Employee,
+e.salary as Salary
+from Department d 
+join (select departmentId,
+name, salary,
+dense_rank () over( partition by departmentId order by salary desc ) as number from Employee) as e
+on e.departmentId = d.id and number=1
 
 Time to solve: 24:40
 _________________________________________________________________________________
@@ -99,6 +112,7 @@ select t.id as Id from Weather t
 join Weather y on t.temperature > y.temperature
 where datediff(y.recordDate,t.recordDate)=-1
 
+Time to solve: Couldn't solve
 _________________________________________________________________________________
 
 https://data36.com/sql-interview-questions-tech-screening-data-analysts/
@@ -134,6 +148,8 @@ from event_log
 group by user_id) as image_user
 where image_count <2000 and image>1000
 
+
+Couldn't Solve
 _________________________________________________________________________________
 
 
@@ -167,6 +183,8 @@ union
 select employee_id from Salaries where employee_id not in (select employee_id from Employees) 
 order by employee_id asc
 
+Couldn't Solve
+
 _______________________________________________________________________________
 1890. The Latest Login in 2020
 
@@ -179,6 +197,7 @@ where user_id is not null and year(time_stamp) = 2020
 group by user_id
 order by time_stamp desc 
 
+Time To Solve: 3:30
 _______________________________________________________________________________
 PRACTICE: CASE WHEN
 
@@ -191,6 +210,7 @@ case when employee_id % 2 <>0 and name not like 'M%' then salary else 0 end as b
 from Employees 
 order by employee_id
 
+9min
 _______________________________________________________________________________
 PRACTICE: SUBQUERY & AGGREGATION
 619. Biggest Single Number
@@ -241,6 +261,7 @@ from Users u left join Rides r on u.id=r.user_id
 group by user_id
 order by sum(distance) desc, name asc
 
+5min
 _______________________________________________________________________________
 PRACTICE: STARTWITH & WHERE STATEMENT
 1527. Patients With a Condition
@@ -252,6 +273,7 @@ Solution:
 select patient_id, patient_name, conditions from Patients
 where conditions like 'DIAB1%' or  conditions like '% DIAB1%'
 
+5min
 _______________________________________________________________________________
 PRACTICE: ORDER BY & DISTINCT & WHERE STATEMENT 
 1148. Article Views I
@@ -263,6 +285,7 @@ select distinct author_id as id from Views
 where author_id = viewer_id and view_date is not null
 order by id asc
 
+3min
 _______________________________________________________________________________
 03/15/2024
 
@@ -276,6 +299,8 @@ select user_id, concat(upper(left(name,1)),
 lower(right(name, length(name)-1))) as name from Users 
 order by user_id asc
 
+Time To Solve: 5min
+
 _______________________________________________________________________________
 PRACTICE: SELF JOIN
 181. Employees Earning More Than Their Managers
@@ -287,6 +312,8 @@ Solution:
 select e.name as Employee from Employee e
 join Employee m on e.managerId=m.Id
 where e.salary>m.salary 
+
+Time To Solve: Couldn't Solve
 
 _______________________________________________________________________________
 03/16/2024
@@ -304,6 +331,8 @@ Solution:
 select distinct author_id as id from Views 
 where author_id = viewer_id and view_date is not null
 order by id asc
+
+Time To Solve: 2min
 _______________________________________________________________________________
 03/18/2024
 PRACTICE: SUBQUERY & NOT IN & LEFT JOIN
@@ -314,15 +343,16 @@ Question: https://leetcode.com/problems/sales-person/description/?envType=list&e
 
 Solution:
 select s.name from SalesPerson s 
-where s.sales_id not in (select sales_id from Orders o left join Company c 
+where s.sales_id not in (select sales_id from Orders o join Company c 
 on o.com_id = c.com_id where c.name ='RED') 
 
+Time To Solve: Couldn't Solve
 _______________________________________________________________________________
 PRACTICE: GROUP_CONCAT & GROUP BY * ORDER BY INSIDE GROUP_CONCAT
 
 1484. Group Sold Products By The Date
 
-Question:https://leetcode.com/problems/group-sold-products-by-the-date/description/?envType=list&envId=e97a9e5m
+Question: https://leetcode.com/problems/group-sold-products-by-the-date/description/?envType=list&envId=e97a9e5m
 
 Solution:
 select sell_date, count(distinct product) as num_sold, group_concat(distinct product order by product asc) as products
@@ -330,6 +360,7 @@ from Activities
 group by sell_date
 order by sell_date
 
+Time To Solve: 3min
 _______________________________________________________________________________
 PRACTICE WHERE STATEMENT
 
@@ -339,6 +370,7 @@ Question: https://leetcode.com/problems/recyclable-and-low-fat-products/descript
 Solution:
 select product_id from Products where low_fats ='Y' and recyclable = 'Y'
 
+Time To Solve: 1:20min
 _______________________________________________________________________________
 SELECT and WHERE
 
@@ -350,6 +382,7 @@ Solution:
 
 select name from Customer where referee_id !=2 or referee_id is null
 
+Time To Solve: 2:20min
 _______________________________________________________________________________
 PRACTICE: LENGTH & WHERE
 
@@ -361,6 +394,7 @@ Solution:
 select tweet_id from Tweets
 where length(content) >15
 
+Time To Solve: 1:00min
 _______________________________________________________________________________
 03/19/2024
 
@@ -378,6 +412,7 @@ from Queries
 where query_name is not null
 group by query_name
 
+Couldn't Solve
 _______________________________________________________________________________
 03/20/2024
 
@@ -392,6 +427,7 @@ select unique_id, name
 from Employees e left join EmployeeUNI ee
 on e.id=ee.id
 
+3min
 _______________________________________________________________________________
 PRACTICE: JOIN & GROUP BY
 
@@ -417,6 +453,7 @@ from Activity s
 join Activity e on s.machine_id =e.machine_id
 group by s.machine_id
 
+2min
 _______________________________________________________________________________
 PRACTICE: JOIN & CASE
 
@@ -430,6 +467,7 @@ from Activity s
 join Activity e on s.machine_id =e.machine_id
 group by s.machine_id
 
+3min
 _______________________________________________________________________________
 PRACTICE: JOIN & NULL & WHERE
 
@@ -442,6 +480,8 @@ select name, bonus from Employee e
 left join Bonus b
 on e.empId = b.empId 
 where bonus <1000 or bonus is null
+
+1min
 _______________________________________________________________________________
 03/21/2024
 
@@ -469,3 +509,222 @@ PRACTICE: JOIN & # TABLES & AND AND ON
 Question: https://leetcode.com/problems/students-and-examinations/?envType=study-plan-v2&envId=top-sql-50
 
 Solution:
+
+_______________________________________________________________________________
+PRACTICE: JOIN & NULL & CASE
+
+1378. Replace Employee ID With The Unique Identifier
+
+Question: https://leetcode.com/problems/replace-employee-id-with-the-unique-identifier/?envType=study-plan-v2&envId=top-sql-50
+Solution:
+
+select case when unique_id then unique_id else null end as unique_id, name from Employees e 
+left join EmployeeUNI eu on e.id=eu.id
+
+3min
+_______________________________________________________________________________
+PRACTICE: GROUP BY & COUNT & ROUND & AVGERAGE & JOIN
+
+1378. Replace Employee ID With The Unique Identifier
+
+Question: https://leetcode.com/problems/the-number-of-employees-which-report-to-each-employee/?envType=study-plan-v2&envId=top-sql-50
+Solution:
+select e.employee_id,
+e.name,
+count(m.name) as reports_count,
+round(avg(m.age),0)  as average_age from Employees m
+join Employees e on m.reports_to = e.employee_id
+group by e.employee_id
+order by e.employee_id
+
+_______________________________________________________________________________
+PRACTICE: HAVING & GROUP BY
+
+596. Classes More Than 5 Students
+
+Question: https://leetcode.com/problems/classes-more-than-5-students/?envType=study-plan-v2&envId=top-sql-50
+Solution:
+select class 
+from Courses 
+group by class
+having count(student)>=5
+
+_______________________________________________________________________________
+PRACTICE: COUNT & HAVING & GROUP BY
+
+1141. User Activity for the Past 30 Days I
+
+Question: https://leetcode.com/problems/user-activity-for-the-past-30-days-i/description/?envType=study-plan-v2&envId=top-sql-50
+Solution:
+select activity_date as day,
+count(distinct user_id) as active_users
+from Activity
+where activity_date between '2019-06-28' and '2019-07-27'
+group by activity_date
+having count(activity_type) >=1
+
+_______________________________________________________________________________
+PRACTICE: COUNT DISTINCT & GROUP BY
+
+2356. Number of Unique Subjects Taught by Each Teacher
+
+Question: https://leetcode.com/problems/number-of-unique-subjects-taught-by-each-teacher/description/?envType=study-plan-v2&envId=top-sql-50
+Solution:
+select teacher_id,
+count(distinct subject_id)  as cnt
+from Teacher
+group by teacher_id
+
+_______________________________________________________________________________
+PRACTICE: SUM & AVG & GROUP BY
+
+1211. Queries Quality and Percentage
+
+Question: https://leetcode.com/problems/queries-quality-and-percentage/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select query_name, 
+round(avg(rating/position),2) as quality,
+round(sum(case when rating < 3 then 1 else 0 end)*100/count(*),2) as poor_query_percentage
+from Queries
+where query_name is not null
+group by query_name
+
+____________________________________________________________________________
+PRACTICE: GROUP BY & LEFT JOIN & IF NULL & JOIN AND 
+1251. Average Selling Price
+
+Question: https://leetcode.com/problems/average-selling-price/?envType=study-plan-v2&envId=top-sql-50
+Solution:
+select p.product_id,
+ifnull(round(sum(price*units)/sum(units),2),0) as average_price
+from Prices p 
+left join UnitsSold u on p.product_id=u.product_id
+and purchase_date between start_date and end_date 
+group by product_id
+___________________________________________________________________________
+PRACTICE: DELETE 
+
+196. Delete Duplicate Emails
+
+Question: https://leetcode.com/problems/delete-duplicate-emails/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+
+delete p1 from Person p1, person p2
+where p1.email=p2.email and p1.id>p2.id
+
+____________________________________________________________________________
+PRACTICE: CONCAT & UPPER?LOWER & LENGTH 
+
+1667. Fix Names in a Table
+
+Question: https://leetcode.com/problems/fix-names-in-a-table/description/?envType=study-plan-v2&envId=top-sql-50
+Solution:
+
+select user_id,
+concat(upper(left(name,1)),lower(right(name,length(name)-1))) as name 
+from Users
+order by user_id
+
+____________________________________________________________________________
+PRACTICE: AND & SELF JOIN & NULL
+
+1978. Employees Whose Manager Left the Company
+
+Question: https://leetcode.com/problems/employees-whose-manager-left-the-company/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+
+select m.employee_id
+from Employees m
+left join Employees e on m.manager_id= e.employee_id 
+where m.salary <30000 and m.manager_id is not null and e.employee_id is null
+order by m.employee_id
+
+____________________________________________________________________________
+PRACTICE: HAVING & GROUP BY & WHERE & UNION
+
+1789. Primary Department for Each Employee
+
+Question: https://leetcode.com/problems/primary-department-for-each-employee/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+
+select employee_id, department_id from Employee
+where primary_flag='Y'
+union 
+select employee_id, department_id from Employee
+group by employee_id 
+having count(department_id)=1
+
+
+________________________________________________________________________________________
+PRACTICE: SUBQUERY & QUESTION INSIDE QUESTION & JOINS
+
+1204. Last Person to Fit in the Bus
+Question: https://leetcode.com/problems/last-person-to-fit-in-the-bus/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select person_name
+from (select q.person_id, q.person_name, q.weight, sum(t.weight) as sum_weight, t.turn
+from Queue q
+join Queue t on q.turn >=t.turn
+group by q.person_id, q.weight
+order by q.turn asc) t 
+where sum_weight <= 1000
+order by sum_weight desc
+limit 1
+
+________________________________________________________________________________________
+PRACTICE: SUM & AVG & SUBQUERY
+
+1174. Immediate Food Delivery II
+Question: https://leetcode.com/problems/immediate-food-delivery-ii/description/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select
+round(sum(if(customer_pref_delivery_date=order_date,1,0))*100 /count(*),2) as immediate_percentage
+from Delivery 
+where (customer_id, order_date) in (select customer_id, min(order_date) from Delivery group by customer_id)
+
+
+________________________________________________________________________________________
+PRACTICE: COUNT & SUM & DATE_FORMAT
+
+1193. Monthly Transactions I
+Question: https://leetcode.com/problems/monthly-transactions-i/submissions/1221564888/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select date_format(trans_date, '%Y-%m') as month,
+country,
+count(id) as trans_count,
+count(case when state like "approved" then 1 end) as approved_count,
+sum(amount) as trans_total_amount,
+sum(case when state like "approved" then amount else 0 end) as approved_total_amount
+from Transactions
+group by month, country
+
+________________________________________________________________________________________
+PRACTICE: SUM & GROUP BY & LEFT JOIN
+
+1934. Confirmation Rate
+Question: https://leetcode.com/problems/confirmation-rate/description/?envType=study-plan-v2&envId=top-sql-50
+Solution:
+select s.user_id,
+round(sum(if(action="confirmed", 1,0))/count(*),2) as confirmation_rate
+from Signups s 
+left join Confirmations c on s.user_id = c.user_id
+group by s.user_id
+
+________________________________________________________________________________________
+PRACTICE: GROUP BY & JOIN
+
+570. Managers with at Least 5 Direct Reports
+Question: https://leetcode.com/problems/managers-with-at-least-5-direct-reports/submissions/1221574222/?envType=study-plan-v2&envId=top-sql-50
+
+Solution:
+select m.name from Employee e
+join Employee m on e.managerId=m.id
+group by m.id
+having count(e.managerId)>=5
